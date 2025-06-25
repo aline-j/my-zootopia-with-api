@@ -8,7 +8,7 @@ load_dotenv()
 
 
 API_KEY = os.getenv("API_NINJAS_KEY")
-URL = 'https://api.api-ninjas.com/v1/animals?name=fox'
+URL = 'https://api.api-ninjas.com/v1/animals?name='
 HEADERS = {'X-Api-Key': API_KEY}
 
 
@@ -17,7 +17,9 @@ def load_data_from_api():
     Get animal name from user input
     Loads animals data from Animals API from Ninja API
     """
-    response = requests.get(URL, headers=HEADERS)
+    name = input('Enter animal name: ')
+    request_url = f'{URL}{name}'
+    response = requests.get(request_url, headers=HEADERS)
     animal_obj = response.json()
     return animal_obj
 
