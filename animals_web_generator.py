@@ -63,18 +63,23 @@ def get_animal_data(animals_data, name):
         return f'<h2 style="text-align: center; margin-top: 100px;">The animal "{name}" does not exist.</h2>'
 
 
-# Main execution
-name = input('Enter animal name: ')
-animals_data = load_data_from_api(name)
-output = get_animal_data(animals_data, name)
+def main():
+    # Main execution
+    name = input('Enter animal name: ')
+    animals_data = load_data_from_api(name)
+    output = get_animal_data(animals_data, name)
 
-# Read the HTML template
-with open('animals_template.html', 'r') as htmlfile:
-    template = htmlfile.read()
+    # Read the HTML template
+    with open('animals_template.html', 'r') as htmlfile:
+        template = htmlfile.read()
 
-# Replace placeholder with animal info
-final_html = template.replace('__REPLACE_ANIMALS_INFO__', output)
+    # Replace placeholder with animal info
+    final_html = template.replace('__REPLACE_ANIMALS_INFO__', output)
 
-# Write the final HTML
-with open('animals.html', 'w') as newhtmlfile:
-    newhtmlfile.write(final_html)
+    # Write the final HTML
+    with open('animals.html', 'w') as newhtmlfile:
+        newhtmlfile.write(final_html)
+
+
+if __name__ == '__main__':
+    main()
