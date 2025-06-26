@@ -12,20 +12,18 @@ URL = 'https://api.api-ninjas.com/v1/animals?name='
 HEADERS = {'X-Api-Key': API_KEY}
 
 
-def load_data_from_api():
+def load_data_from_api(name):
     """
     Get animal name from user input
     Loads animals data from Animals API from Ninja API
     """
-    name = input('Enter animal name: ')
     request_url = f'{URL}{name}'
     response = requests.get(request_url, headers=HEADERS)
     animal_obj = response.json()
     return animal_obj
 
 
-def serialize_animal(animal_obj):
-    name = animal_obj.get('name')
+def serialize_animal(animal_obj, name):
     info = {
         "Diet": animal_obj['characteristics'].get('diet'),
         "Location": animal_obj.get('locations')[0],
@@ -51,19 +49,23 @@ def serialize_animal(animal_obj):
     return output
 
 
-def get_animal_data(animals_data):
+def get_animal_data(animals_data, name):
     """
     Formats all animals into a single HTML string.
     """
-    output = ''
-    for animal in animals_data:
-        output += serialize_animal(animal)
-    return output
+    if animals_data:
+        output = ''
+        for animal in animals_data:
+            output += serialize_animal(animal, name)
+        return output
+    else:
+        return f'<h2 style="text-align: center; margin-top: 100px;">The animal "{name}" does not exist.</h2>'
 
 
 # Main execution
-animals_data = load_data_from_api()
-output = get_animal_data(animals_data)
+name = input('Enter animal name: ')
+animals_data = load_data_from_api(name)
+output = get_animal_data(animals_data, name)
 
 # Read the HTML template
 with open('animals_template.html', 'r') as htmlfile:
