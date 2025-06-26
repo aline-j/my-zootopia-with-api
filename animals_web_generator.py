@@ -57,6 +57,7 @@ def get_animal_data(animals_data, name):
         output = ''
         for animal in animals_data:
             output += serialize_animal(animal, name)
+        print('Website was successfully generated to the file animals.html.')
         return output
     else:
         return f'<h2 style="text-align: center; margin-top: 100px;">The animal "{name}" does not exist.</h2>'
