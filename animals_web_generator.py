@@ -2,6 +2,37 @@ import data_fetcher
 
 
 def serialize_animal(animal_obj, animal_name):
+    """
+    Generates an HTML string representing an animal's details as a list inside a card layout.
+
+    Args:
+        animal_obj (dict): A dictionary containing information about the animal. Expected keys:
+            'characteristics' (dict), 'locations' (list), and 'taxonomy' (dict).
+        animal_name (str): The name of the animal to be displayed as the card's title.
+
+    Returns:
+        str: A formatted HTML string with a list of the animal's properties,
+             wrapped in HTML elements suitable for rendering a card.
+
+    Example:
+        animal = {
+            "characteristics": {
+                "diet": "Herbivore",
+                "type": "Mammal",
+                "name_of_young": "Calf",
+                "lifespan": "20 years",
+                "skin_type": "Fur",
+                "weight": "500kg",
+                "height": "1.8m",
+                "length": "2m"
+            },
+            "locations": ["Savannah"],
+            "taxonomy": {
+                "class": "Mammalia"
+            }
+        }
+        html = serialize_animal(animal, "Elephant")
+    """
     info = {
         "Diet": animal_obj['characteristics'].get('diet'),
         "Location": animal_obj.get('locations')[0],
