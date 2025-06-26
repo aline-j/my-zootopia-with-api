@@ -1,29 +1,7 @@
-import requests
-import os
-from dotenv import load_dotenv
+import data_fetcher
 
 
-# load .env file
-load_dotenv()
-
-
-API_KEY = os.getenv("API_NINJAS_KEY")
-URL = 'https://api.api-ninjas.com/v1/animals?name='
-HEADERS = {'X-Api-Key': API_KEY}
-
-
-def load_data_from_api(name):
-    """
-    Get animal name from user input
-    Loads animals data from Animals API from Ninja API
-    """
-    request_url = f'{URL}{name}'
-    response = requests.get(request_url, headers=HEADERS)
-    animal_obj = response.json()
-    return animal_obj
-
-
-def serialize_animal(animal_obj, name):
+def serialize_animal(animal_obj, animal_name):
     info = {
         "Diet": animal_obj['characteristics'].get('diet'),
         "Location": animal_obj.get('locations')[0],
@@ -38,7 +16,7 @@ def serialize_animal(animal_obj, name):
     }
 
     output = '<li class="cards__item">\n'
-    output += f'<div class="card__title">{name}</div>\n'
+    output += f'<div class="card__title">{animal_name}</div>\n'
     output += '<div class="card__text">\n<ul>\n'
 
     for key, value in info.items():
@@ -49,25 +27,25 @@ def serialize_animal(animal_obj, name):
     return output
 
 
-def get_animal_data(animals_data, name):
+def get_animal_data(animals_data, animal_name):
     """
     Formats all animals into a single HTML string.
     """
     if animals_data:
         output = ''
         for animal in animals_data:
-            output += serialize_animal(animal, name)
+            output += serialize_animal(animal, animal_name)
         print('Website was successfully generated to the file animals.html.')
         return output
     else:
-        return f'<h2 style="text-align: center; margin-top: 100px;">The animal "{name}" does not exist.</h2>'
+        return f'<h2 style="text-align: center; margin-top: 100px;">The animal "{animal_name}" does not exist.</h2>'
 
 
 def main():
     # Main execution
-    name = input('Enter animal name: ')
-    animals_data = load_data_from_api(name)
-    output = get_animal_data(animals_data, name)
+    animal_name = input('Enter animal name: ')
+    animals_data = data_fetcher.fetch_data(animal_name)
+    output = get_animal_data(animals_data, animal_name)
 
     # Read the HTML template
     with open('animals_template.html', 'r') as htmlfile:
